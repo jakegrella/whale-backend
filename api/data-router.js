@@ -3,7 +3,8 @@ const axios = require('axios').default;
 
 // route to whale-alert.io
 router.get('/:currency/:minTransactionVal', async (req, res) => {
-  const { currency, minTransactionVal } = req.params;
+  let { currency, minTransactionVal } = req.params;
+  if (currency === 'all') currency = '';
   try {
     await axios
       .get(
