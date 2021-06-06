@@ -5,12 +5,17 @@ const axios = require('axios').default;
 router.get('/:currency/:minTransactionVal', async (req, res) => {
   const { currency, minTransactionVal } = req.params;
   try {
-    const response = await axios.get(
-      `https://api.whale-alert.io/v1/transactions?api_key=${process.env.API_KEY}&currency=${currency}&min_value=${minTransactionVal}`
-    );
-    console.log(response);
+    await axios
+      .get(
+        `https://api.whale-alert.io/v1/transactions?api_key=${process.env.API_KEY}&currency=${currency}&min_value=${minTransactionVal}`
+      )
+      .then((response) => {
+        res.status(200).json(response.data);
+      })
+      .catch((err) => {
+        res.status(400).json({ errMessage: err.message });
+      });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ errMessage: err.message });
   }
 });
